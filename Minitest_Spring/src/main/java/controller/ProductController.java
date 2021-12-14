@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import service.CategoryService;
 import service.ProductService;
 
@@ -17,6 +19,7 @@ import java.util.List;
 public class ProductController {
     ProductService productService = new ProductService();
     CategoryService categoryService = new CategoryService();
+    RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
 
     @GetMapping("/list")
     public String showList(Model model) {
@@ -64,17 +67,19 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String create(@RequestParam String name, int categoryId, String description, String color, int price, int quantity) {
-        Product product = new Product(name, price, quantity, color, description, categoryId);
+    public String create(Product product) {
+//        Product product = new Product(name, price, quantity, color, description, categoryId);
         productService.save(product);
         return "redirect:/list";
     }
 
     @PostMapping("/edit")
-    public String edit(@RequestParam int id, String name, int categoryId, String description, String color, int price, int quantity) {
-        Product product = new Product(id,name, price, quantity, color, description, categoryId);
+    public String edit(Product product, @RequestParam int id) {
+//        Product product = new Product(id,name, price, quantity, color, description, categoryId);
         productService.update(id,product);
         return "redirect:/list";
+        // response.sendRedirect("/list");
+//        redirectAttributes.addFlashAttribute();
     }
 
 
